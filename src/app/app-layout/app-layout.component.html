@@ -4,13 +4,19 @@
     <div>Calculations breakdown</div>
 
     <div class="container">
-        <receipt-totals title="Subtotal"></receipt-totals>
-        <receipt-totals title="Tax"></receipt-totals>
-        <receipt-totals title="Tip"></receipt-totals>
-        <receipt-totals title="Total"></receipt-totals>
+        Receipt Totals
+        <receipt-total title="Subtotal"></receipt-total>
+        <receipt-total title="Tax"></receipt-total>
+        <receipt-total title="Tip"></receipt-total>
+        <receipt-total title="Total"></receipt-total>
     </div>
 
-    <div>Line Items</div>
 
-    <div>Add Line Item Button</div>
-</div>
+    <div class="container">
+        Line Items
+        <div class="container" *ngFor="let item of lineItems; let i = index">
+            <line-item itemNumber={{i}}></line-item>
+        </div>
+
+        <div class="container">Add Line Item Button</div>
+    </div>
