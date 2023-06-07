@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { AppLayoutComponent } from './app-layout/app-layout.component';
 import { ReceiptTotalComponent } from './receipt-total/receipt-total.component';
 import { LineItemComponent } from './line-item/line-item.component';
+import { CalculationsComponent } from './calculations/calculations.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { LineItemComponent } from './line-item/line-item.component';
     AppLayoutComponent,
     ReceiptTotalComponent,
     LineItemComponent,
+    CalculationsComponent,
   ],
   imports: [
     BrowserModule,
