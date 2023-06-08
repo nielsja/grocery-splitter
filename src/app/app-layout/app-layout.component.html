@@ -19,8 +19,11 @@
         Line Items
         <!-- https://stackoverflow.com/a/55743150 -->
         <div class="container" *ngFor="let item of lineItems; let i = index">
-            <line-item itemNumber="{{i + 1}}"></line-item>
+            <line-item itemNumber="{{i + 1}}" (lineItemUpdateEvent)="lineItemEvent($event)"></line-item>
         </div>
-
+        <div>{{lineItemEventPayload | json}}</div>
+        <div>{{lineItem1Data | json}}</div>
+        <div>{{lineItem2Data | json}}</div>
+        <div>{{lineItem3Data | json}}</div>
         <div class="container">Add Line Item Button</div>
     </div>

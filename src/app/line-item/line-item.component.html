@@ -4,21 +4,23 @@
             <span>{{ '#' + itemNumber }}</span>
         </div>
         <div class="col-1">
-            <label class="col-form-label" for="itemAmount">Amount</label>
+            <label class="col-form-label" for="{{itemNumber}}-itemAmount">Amount</label>
         </div>
         <div class="col-2">
-            <input id="itemAmount" formControlName="itemAmount" class="form-control" type="text" placeholder="12.34">
+            <input id="{{itemNumber}}-itemAmount" formControlName="itemAmount" class="form-control" type="text"
+                placeholder="12.34" (blur)="updateLineItem()">
         </div>
         <div class="col-2">
-            <input id="person1Radio" class="form-check-input" type="radio" formControlName="splitByRadio" value={{1}}>
-            <label class="form-check-label px-2" for="person1Radio">
-                Person
-                1</label>
+            <label class="form-check-label px-2">
+                <input class="form-check-input" type="radio" formControlName="splitByRadio" value={{1}}
+                    (change)="updateLineItem()"> Person 1
+            </label>
         </div>
         <div class="col-2">
-            <input id="person2Radio" class="form-check-input" type="radio" formControlName="splitByRadio" value="2">
-            <label class="form-check-label px-2" for="person2Radio">Person
-                2</label>
+            <label class="form-check-label px-2">
+                <input class="form-check-input" type="radio" formControlName="splitByRadio" value={{2}}
+                    (change)="updateLineItem()"> Person 2
+            </label>
         </div>
         <div class="col-2">
             formGroup value: {{ formGroup.controls['splitByRadio'].value }}
