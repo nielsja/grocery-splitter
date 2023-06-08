@@ -16,14 +16,51 @@
 
 
     <div class="container">
+        Form Array
+        <div [formGroup]="lineItemsForm">
+            <ng-container formArrayName="lineItemsArray">
+                <ng-container *ngFor="let item of formLineItems.controls; let i = index">
+                    <div [formGroup]="lineItemsForm">
+
+                        <input matInput formControlName="itemAmount" placeholder="23.45">
+
+
+                        <button class="delete-btn" (click)="deleteLineItem(i)">
+                            delete_forever</button>
+                    </div>
+                </ng-container>
+            </ng-container>
+
+            <button (click)="addLineItem()">
+                Add
+            </button>
+
+        </div>
+    </div>
+
+    <div class="container">Add Line Item Button
+
+
+    </div>
+
+    <div class="container">
         Line Items
         <!-- https://stackoverflow.com/a/55743150 -->
         <div class="container" *ngFor="let item of lineItems; let i = index">
-            <line-item itemNumber="{{i + 1}}" (lineItemUpdateEvent)="lineItemEvent($event)"></line-item>
+            <line-item [itemNumber]=i (lineItemUpdateEvent)="lineItemEvent($event)"></line-item>
         </div>
-        <div>{{lineItemEventPayload | json}}</div>
-        <div>{{lineItem1Data | json}}</div>
-        <div>{{lineItem2Data | json}}</div>
-        <div>{{lineItem3Data | json}}</div>
-        <div class="container">Add Line Item Button</div>
+    </div>
+
+    <div class="container bg-warning border">
+        <h3>Debug Tools</h3>
+        <div>
+            <h4>Payload Data</h4>
+            {{lineItemEventPayload | json}}
+        </div>
+        <div>
+            <h4>Individual Line Item Data</h4>
+            <ng-container *ngFor="let item of lineItemDebugDataSource; let i = index">
+                <div>{{ item | json}}</div>
+            </ng-container>
+        </div>
     </div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ILineItemUpdateEventPayload, LineItemComponent } from '../line-item/line-item.component';
 
 @Component({
@@ -7,31 +8,44 @@ import { ILineItemUpdateEventPayload, LineItemComponent } from '../line-item/lin
   styleUrls: ['./app-layout.component.scss']
 })
 export class AppLayoutComponent implements OnInit {
-  lineItems = [1, 2, 3]
-  lineItemEventPayload: ILineItemUpdateEventPayload = { itemNumber: -1, itemAmount: -1, splitBy: -1 };
-  lineItem1Data: ILineItemUpdateEventPayload = { itemNumber: 1, itemAmount: -1, splitBy: -1 };
-  lineItem2Data: ILineItemUpdateEventPayload = { itemNumber: 2, itemAmount: -1, splitBy: -1 };
-  lineItem3Data: ILineItemUpdateEventPayload = { itemNumber: 3, itemAmount: -1, splitBy: -1 };
+  defaultNumberOfLineItems = 3;
+  numberOfLineItems: number = 0;
+  lineItems: number[] = [];
+  lineItemsForm = this.fb.group({
+    lineItemsArray: this.fb.array([])
+  });
 
-  constructor() { }
+  constructor(private fb: FormBuilder) { }
 
-  ngOnInit(): void {
-
+  get formLineItems() {
+    return this.lineItemsForm.controls["lineItemsArray"] as FormArray;
   }
+  ngOnInit(): void {
+    this.lineItems = Array(this.defaultNumberOfLineItems).fill(0);
+  }
+
+  addLineItem() {
+    const lineItem = this.fb.group({
+      itemAmount: 0
+    });
+    this.lineItemsForm.controls['lineItemsArray'].push(lineItem as any);
+  }
+
+  deleteLineItem(index: number) {
+    console.log(`removing index ${index}`)
+  }
+
+  /** DEBUG TOOLS **/
+  lineItemEventPayload: ILineItemUpdateEventPayload = { index: -1, amount: -1, splitBy: -1 };
+  lineItemDebugDataSource: ILineItemUpdateEventPayload[] = [];
+
+  lineItem1Data: ILineItemUpdateEventPayload = { index: 0, amount: -1, splitBy: -1 };
+  lineItem2Data: ILineItemUpdateEventPayload = { index: 1, amount: -1, splitBy: -1 };
+  lineItem3Data: ILineItemUpdateEventPayload = { index: 2, amount: -1, splitBy: -1 };
+
 
   lineItemEvent(payload: ILineItemUpdateEventPayload) {
     this.lineItemEventPayload = payload;
-    switch (payload.itemNumber) {
-      case 1:
-        this.lineItem1Data = payload;
-        break;
-      case 2:
-        this.lineItem2Data = payload;
-        break;
-      case 3:
-        this.lineItem3Data = payload;
-        break;
-
-    }
+    this.lineItemDebugDataSource[payload.index] = payload;
   }
 }

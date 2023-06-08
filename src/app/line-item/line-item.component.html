@@ -1,7 +1,7 @@
 <form [formGroup]="formGroup">
     <div class="row align-items-center justify-content-start m-1 p-2 bg-light border">
         <div class="col-1">
-            <span>{{ '#' + itemNumber }}</span>
+            <span>{{ '#' + (itemNumber + 1) }}</span>
         </div>
         <div class="col-1">
             <label class="col-form-label" for="{{itemNumber}}-itemAmount">Amount</label>
@@ -21,9 +21,6 @@
                 <input class="form-check-input" type="radio" formControlName="splitByRadio" value={{2}}
                     (change)="updateLineItem()"> Person 2
             </label>
-        </div>
-        <div class="col-2">
-            formGroup value: {{ formGroup.controls['splitByRadio'].value }}
         </div>
     </div>
 </form>
