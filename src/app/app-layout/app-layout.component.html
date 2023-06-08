@@ -17,8 +17,9 @@
 
     <div class="container">
         Line Items
+        <!-- https://stackoverflow.com/a/55743150 -->
         <div class="container" *ngFor="let item of lineItems; let i = index">
-            <line-item itemNumber={{i}}></line-item>
+            <line-item itemNumber="{{i + 1}}"></line-item>
         </div>
 
         <div class="container">Add Line Item Button</div>

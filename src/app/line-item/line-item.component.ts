@@ -16,16 +16,9 @@ export class LineItemComponent implements OnInit, OnChanges {
 
   formGroup = new FormGroup({
     splitByRadio: new FormControl(),
+    itemAmount: new FormControl()
   })
 
-  radioGroup = new FormGroup({
-
-    person1RadioButton: new FormControl(SplitBy.Person1),
-    person2RadioButton: new FormControl(SplitBy.Person2),
-  })
-  radioGroupsplitBy = new FormGroup({
-    splitByRadioButton: new FormControl()
-  })
 
   constructor() { }
 
@@ -33,8 +26,6 @@ export class LineItemComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    console.log('this.radioGroup.value:', this.radioGroup.value)
-    console.log('this.radioGroupsplitBy.value:', this.radioGroupsplitBy.value)
   }
 
 }
