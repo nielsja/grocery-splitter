@@ -8,7 +8,7 @@
 
                     <!-- Item Amount Input -->
                     <div class="col-2">
-                        <input type="text" class="form-control" formControlName="itemAmount" placeholder="23.45"
+                        <input type="text" class="form-control" formControlName="itemAmount" placeholder="12.34"
                             (keyup)="updateLineItems(i)">
                     </div>
 
@@ -22,7 +22,7 @@
                             <input type="radio" class="btn-check" (click)="updateLineItems(i)"
                                 id="line-item-{{i}}-splitBy-button-radio-{{split}}" autocomplete="off"
                                 name="line-item-{{i}}-splitBy-button-radio">
-                            <label class="btn btn-outline-primary"
+                            <label class="btn btn-outline-primary col-2"
                                 for="line-item-{{i}}-splitBy-button-radio-{{split}}">{{
                                 WaysToSplitEnum[split]
                                 }}</label>
