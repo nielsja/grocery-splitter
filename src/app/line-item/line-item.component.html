@@ -1,26 +1,58 @@
-<form [formGroup]="formGroup">
-    <div class="row align-items-center justify-content-start m-1 p-2 bg-light border">
-        <div class="col-1">
-            <span>{{ '#' + (itemNumber + 1) }}</span>
-        </div>
-        <div class="col-1">
-            <label class="col-form-label" for="{{itemNumber}}-itemAmount">Amount</label>
-        </div>
-        <div class="col-2">
-            <input id="{{itemNumber}}-itemAmount" formControlName="itemAmount" class="form-control" type="text"
-                placeholder="12.34" (blur)="updateLineItem()">
-        </div>
-        <div class="col-2">
-            <label class="form-check-label px-2">
-                <input class="form-check-input" type="radio" formControlName="splitByRadio" value={{1}}
-                    (change)="updateLineItem()"> Person 1
-            </label>
-        </div>
-        <div class="col-2">
-            <label class="form-check-label px-2">
-                <input class="form-check-input" type="radio" formControlName="splitByRadio" value={{2}}
-                    (change)="updateLineItem()"> Person 2
-            </label>
-        </div>
-    </div>
-</form>
+<div class="container">
+    <ng-container [formGroup]="formGroup">
+
+        <!-- Each Line Item Row -->
+        <ng-container formArrayName="lineItemsArray">
+            <ng-container *ngFor="let lineItemGroup of lineItemsArray.controls; let i = index">
+                <div [formGroup]="lineItemGroup" class="row bg-light border p-2 my-2 align-items-center">
+
+                    <!-- Item Amount Input -->
+                    <div class="col-2">
+                        <input type="text" class="form-control" formControlName="itemAmount" placeholder="23.45"
+                            (keyup)="updateLineItems(i)">
+                    </div>
+
+                    <!-- People to Split Radios -->
+                    <div class="btn-group col-6" role="group">
+                        <ng-container *ngFor="let split of waysToSplit" [formGroup]="lineItemGroup.controls['splitBy']">
+                            <!-- <button type="button" class="btn btn-primary" (click)="updateLineItems(i)"
+                                id="line-item-{{i}}-splitBy-button-{{split}}">
+                                {{ WaysToSplitEnum[split] }}
+                            </button> -->
+                            <input type="radio" class="btn-check" (click)="updateLineItems(i)"
+                                id="line-item-{{i}}-splitBy-button-radio-{{split}}" autocomplete="off"
+                                name="line-item-{{i}}-splitBy-button-radio">
+                            <label class="btn btn-outline-primary"
+                                for="line-item-{{i}}-splitBy-button-radio-{{split}}">{{
+                                WaysToSplitEnum[split]
+                                }}</label>
+                            <!-- <ng-container class="col-2" [formGroup]="lineItemGroup.controls['splitBy']">
+                                <div>
+                                    <input type="radio" class="form-check-input" (click)="updateLineItems(i)"
+                                        id="line-item-{{i}}-splitBy-radio-input-{{split}}">
+                                    <label class="form-check-label"
+                                        for="line-item-{{i}}-splitBy-radio-input-{{split}}">{{
+                                        WaysToSplitEnum[split]
+                                        }}</label>
+                                </div>
+                            </ng-container> -->
+                        </ng-container>
+                    </div>
+
+                    <!-- Remove Line Item Button -->
+                    <div class=" col-2">
+                        <button class="btn btn-outline-danger" (click)="deleteLineItem(i)">
+                            Remove</button>
+                    </div>
+
+                </div>
+            </ng-container>
+        </ng-container>
+
+        <!-- Add Line Item Button -->
+        <button (click)="addLineItem()">
+            Add
+        </button>
+
+    </ng-container>
+</div>

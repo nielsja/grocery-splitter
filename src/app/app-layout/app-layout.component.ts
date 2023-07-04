@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ILineItemUpdateEventPayload, LineItemComponent } from '../line-item/line-item.component';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { LineItemComponent } from '../line-item/line-item.component';
+import { ILineItem } from '../line-item/line-item.interface';
+import { WaysToSplit } from '../shared/WaysToSplitEnum';
+
+
 
 @Component({
   selector: 'app-layout',
@@ -8,44 +12,30 @@ import { ILineItemUpdateEventPayload, LineItemComponent } from '../line-item/lin
   styleUrls: ['./app-layout.component.scss']
 })
 export class AppLayoutComponent implements OnInit {
-  defaultNumberOfLineItems = 3;
-  numberOfLineItems: number = 0;
-  lineItems: number[] = [];
-  lineItemsForm = this.fb.group({
-    lineItemsArray: this.fb.array([])
-  });
+  defaultNumberOfLineItems = 1;
+  waysToSplit = [
+    WaysToSplit.Person1,
+    WaysToSplit.Person2,
+    WaysToSplit.All
+  ]
 
-  constructor(private fb: FormBuilder) { }
+  constructor() { }
 
-  get formLineItems() {
-    return this.lineItemsForm.controls["lineItemsArray"] as FormArray;
-  }
   ngOnInit(): void {
-    this.lineItems = Array(this.defaultNumberOfLineItems).fill(0);
   }
 
-  addLineItem() {
-    const lineItem = this.fb.group({
-      itemAmount: 0
-    });
-    this.lineItemsForm.controls['lineItemsArray'].push(lineItem as any);
+  calculateTotals(lineItems: ILineItem[]) {
+    lineItems.forEach((item) => {
+      console.log(item.itemAmount, item.splitBy)
+    })
+    console.log('got to calculateTotals!',);
   }
+}
 
-  deleteLineItem(index: number) {
-    console.log(`removing index ${index}`)
-  }
+const numericOnly: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  let isValid = true;
+  const validationError: ValidationErrors = { invalid: true }
 
-  /** DEBUG TOOLS **/
-  lineItemEventPayload: ILineItemUpdateEventPayload = { index: -1, amount: -1, splitBy: -1 };
-  lineItemDebugDataSource: ILineItemUpdateEventPayload[] = [];
-
-  lineItem1Data: ILineItemUpdateEventPayload = { index: 0, amount: -1, splitBy: -1 };
-  lineItem2Data: ILineItemUpdateEventPayload = { index: 1, amount: -1, splitBy: -1 };
-  lineItem3Data: ILineItemUpdateEventPayload = { index: 2, amount: -1, splitBy: -1 };
-
-
-  lineItemEvent(payload: ILineItemUpdateEventPayload) {
-    this.lineItemEventPayload = payload;
-    this.lineItemDebugDataSource[payload.index] = payload;
-  }
+  // do logic here to check if isValid should be flagged as 'false'
+  return isValid ? null : validationError;
 }
