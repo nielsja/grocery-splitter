@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { WaysToSplit } from '../shared/WaysToSplitEnum';
 import { ILineItem, ILineItemForm, ILineItemRow, ILineItemRowControls, ILineItemRowGroup, ILineItemRowsArray, ISplitByFormControl, ISplitByRadiosGroup } from './line-item.interface';
@@ -29,11 +29,10 @@ export class LineItemComponent implements OnInit {
   }
 
   constructor(private formBuilder: FormBuilder) {
-
   }
 
   // #region Lifecycle Hooks
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     let loopNumber = 0;
     const underSafetyLimitBreak = loopNumber < 50;
 
@@ -41,20 +40,6 @@ export class LineItemComponent implements OnInit {
       loopNumber++;
       this.addLineItem();
     }
-
-    this.formGroup.controls.lineItemsArray.valueChanges.subscribe((chg) => {
-      console.log(chg, null, 2);
-      console.log('values', chg.values.toString())
-    })
-  }
-  ngOnInit(): void {
-    // let loopNumber = 0;
-    // const underSafetyLimitBreak = loopNumber < 50;
-
-    // while (this.lineItemsArray.length < this.startNumOfLines && underSafetyLimitBreak) {
-    //   loopNumber++;
-    //   this.addLineItem();
-    // }
   }
   // #endregion
 
@@ -71,7 +56,7 @@ export class LineItemComponent implements OnInit {
 
   updateLineItems(index: number) {
     const updatedLineItem = this.lineItemsArray.controls[index];
-    if (this.isLineItemValid(updatedLineItem)) {
+    if (updatedLineItem.valid) {
       this.emitLineItems();
     }
   }
@@ -99,9 +84,8 @@ export class LineItemComponent implements OnInit {
     let returnItems: ILineItem[] = [];
 
     this.lineItemsArray.controls.forEach((row) => {
-      if (this.isLineItemValid(row)) {
+      if (row.valid) {
         returnItems.push({
-          // these values are known to not be null because of isLineItemValid check
           itemAmount: row.controls['itemAmount'].value!,
           splitBy: 0
         })
@@ -111,21 +95,6 @@ export class LineItemComponent implements OnInit {
     if (returnItems.length > 0) {
       this.lineItemUpdateEvent.emit(returnItems);
     }
-  }
-
-  private isLineItemValid(lineItem: ILineItemRowGroup): boolean {
-    console.log(`isLineItemValid - start!`)
-    const itemAmount = lineItem.controls['itemAmount'];
-    const splitBy: FormGroup<FormControl<number | null>[]> = lineItem.controls['splitBy'];
-    return lineItem.valid;
-    // if (itemAmount.value !== null &&
-    //   itemAmount.valid &&
-    //   splitBy.controls.every((option) => option.value !== null) &&
-    //   splitBy.valid) {
-    //   return true;
-    // }
-
-    // return false;
   }
   // #endregion
 }

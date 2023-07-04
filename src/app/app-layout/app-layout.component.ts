@@ -12,7 +12,7 @@ import { WaysToSplit } from '../shared/WaysToSplitEnum';
   styleUrls: ['./app-layout.component.scss']
 })
 export class AppLayoutComponent implements OnInit {
-  defaultNumberOfLineItems = 1;
+  defaultNumberOfLineItems = 3;
   waysToSplit = [
     WaysToSplit.Person1,
     WaysToSplit.Person2,
