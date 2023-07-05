@@ -15,7 +15,7 @@
     </div>
 
     <div class="container">
-        <line-item [startNumOfLines]="defaultNumberOfLineItems"
+        <line-item [startNumOfLines]="defaultNumberOfLineItems" [waysToSplit]="waysToSplit"
             (lineItemUpdateEvent)="calculateTotals($event)"></line-item>
     </div>
 

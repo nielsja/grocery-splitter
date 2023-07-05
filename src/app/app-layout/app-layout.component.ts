@@ -25,10 +25,8 @@ export class AppLayoutComponent implements OnInit {
   }
 
   calculateTotals(lineItems: ILineItem[]) {
-    lineItems.forEach((item) => {
-      console.log(item.itemAmount, item.splitBy)
-    })
-    console.log('got to calculateTotals!',);
+    console.log('calculateTotals:', lineItems.length);
+    lineItems.forEach((item) => console.log(JSON.stringify(item, null, 2)))
   }
 }
 
