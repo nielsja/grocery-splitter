@@ -1,1 +1,57 @@
-<p>{{title}}</p>
+<form [formGroup]="receiptForm">
+
+    <!-- Subtotal Input -->
+    <div class="row col-4 my-2">
+        <div class="input-group">
+            <div class="input-group-prepend col-5">
+                <span class="input-group-text">Subtotal</span>
+            </div>
+            <input type="text" class="form-control" placeholder="20.00" (input)="removeNonDigits('subtotal')"
+                formControlName="subtotal">
+        </div>
+    </div>
+
+    <!-- Tax Input -->
+    <div class="row col-4 my-2">
+        <div class="input-group">
+            <div class="input-group-prepend col-5">
+                <span class="input-group-text">Tax</span>
+            </div>
+            <input type="text" class="form-control" placeholder="1.00" (input)="removeNonDigits('tax')"
+                formControlName="tax">
+        </div>
+    </div>
+
+    <!-- Total Input -->
+    <div class="row col-4 my-2">
+        <div class="input-group">
+            <div class="input-group-prepend col-5">
+                <span class="input-group-text">Total</span>
+            </div>
+            <input type="text" class="form-control" placeholder="21.00" (input)="removeNonDigits('total')"
+                formControlName="total">
+        </div>
+    </div>
+
+    <!-- Tip Input -->
+    <div class="row col-4 my-2">
+        <div class="input-group">
+            <div class="input-group-prepend col-5">
+                <span class="input-group-text">Tip</span>
+            </div>
+            <input type="text" class="form-control" placeholder="3.00" (input)="removeNonDigits('tip')"
+                formControlName="tip">
+        </div>
+    </div>
+
+    <!-- Final Total Input -->
+    <div class="row col-4 my-2">
+        <div class="input-group">
+            <div class="input-group-prepend col-5">
+                <span class="input-group-text">Final Total</span>
+            </div>
+            <input type="text" class="form-control" placeholder="24.00" (input)="removeNonDigits('final')"
+                formControlName="final">
+        </div>
+    </div>
+</form>

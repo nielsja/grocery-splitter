@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { LineItemComponent } from '../line-item/line-item.component';
 import { ILineItem } from '../line-item/line-item.interface';
 import { WaysToSplit } from '../shared/WaysToSplitEnum';
+import { Observable } from 'rxjs';
 
 
 
@@ -23,7 +24,6 @@ export class AppLayoutComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
   calculateTotals(lineItems: ILineItem[]) {
     console.log('calculateTotals:', lineItems.length);
     lineItems.forEach((item) => console.log(JSON.stringify(item, null, 2)))
