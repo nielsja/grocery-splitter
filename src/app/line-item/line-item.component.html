@@ -7,7 +7,7 @@
                 <div [formGroup]="lineItemGroup" class="row bg-light border p-2 my-2 align-items-center">
 
                     <!-- Item Amount Input -->
-                    <div class="col-2">
+                    <div class="col-3">
                         <input type="text" class="form-control" formControlName="itemAmount" placeholder="12.34">
                     </div>
 
@@ -35,8 +35,8 @@
         </ng-container>
 
         <!-- Add Line Item Button -->
-        <button (click)="addLineItem()">
-            Add
+        <button class="btn btn-outline-success" (click)="addLineItem()">
+            Add new line item
         </button>
 
     </ng-container>
