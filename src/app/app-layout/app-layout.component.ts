@@ -2,11 +2,28 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { LineItemComponent } from '../line-item/line-item.component';
 import { ILineItem } from '../line-item/line-item.interface';
-import { WaysToSplit } from '../shared/WaysToSplitEnum';
+import { WaysToSplit, SplitBetween } from '../shared/WaysToSplitEnum';
 import { Observable } from 'rxjs';
 import { ReceiptTotals } from '../receipt-total/receipt-total.component';
 
+interface ICalculatedAmounts {
+  solo: number;
+  split: number;
+  subtotal: number;
+  tax: number;
+  tip: number;
+  totalWithTax: number;
+  totalWithTaxAndTip: number;
+}
 
+type CalculatedAmounts = {
+  [key in SplitBetween]?: ICalculatedAmounts;
+}
+
+interface ICalculation {
+  Person1: ICalculatedAmounts;
+  Person2: ICalculatedAmounts;
+}
 
 @Component({
   selector: 'app-layout',
@@ -22,22 +39,6 @@ export class AppLayoutComponent implements OnInit {
     WaysToSplit.All
   ]
 
-  person1Only = 0;
-  person1Split = 0;
-  person1Subtotal = 0;
-  person1Tax = 0;
-  person1Tip = 0;
-  person1TotalWithTax = 0;
-  person1TotalWithTaxAndTip = 0;
-
-  person2Only = 0;
-  person2Split = 0;
-  person2Subtotal = 0;
-  person2Tax = 0;
-  person2Tip = 0;
-  person2TotalWithTax = 0;
-  person2TotalWithTaxAndTip = 0;
-
   lineItems: ILineItem[] = [{ itemAmount: 0, splitBy: -1 }];
   receipt: ReceiptTotals = {
     subtotal: 0,
@@ -45,6 +46,26 @@ export class AppLayoutComponent implements OnInit {
     total: 0,
     tip: 0,
     final: 0,
+  }
+  calcs: ICalculation = {
+    Person1: {
+      solo: 0,
+      split: 0,
+      subtotal: 0,
+      tax: 0,
+      tip: 0,
+      totalWithTax: 0,
+      totalWithTaxAndTip: 0,
+    },
+    Person2: {
+      solo: 0,
+      split: 0,
+      subtotal: 0,
+      tax: 0,
+      tip: 0,
+      totalWithTax: 0,
+      totalWithTaxAndTip: 0,
+    }
   }
 
   constructor() { }
@@ -73,35 +94,35 @@ export class AppLayoutComponent implements OnInit {
 
       switch (splitBy) {
         case WaysToSplit.Person1:
-          this.person1Only += +item.itemAmount;
+          this.calcs.Person1.solo += +item.itemAmount;
           break;
         case WaysToSplit.Person2:
-          this.person2Only += +item.itemAmount;
+          this.calcs.Person2.solo += +item.itemAmount;
           break;
         case WaysToSplit.All:
-          this.person1Split += +this.splitBetweenAll(item.itemAmount, this.numOfPeople, true);
-          this.person2Split += +this.splitBetweenAll(item.itemAmount, this.numOfPeople, false);
+          this.calcs.Person1.split += +this.splitBetweenAll(item.itemAmount, this.numOfPeople, true);
+          this.calcs.Person2.split += +this.splitBetweenAll(item.itemAmount, this.numOfPeople, false);
           break;
       }
     })
 
     // calculate subtotals (no tax + no tip)
-    this.person1Subtotal = this.sum([this.person1Only, this.person1Split]);
-    this.person2Subtotal = this.sum([this.person2Only, this.person2Split]);
+    this.calcs.Person1.subtotal = this.sum([this.calcs.Person1.solo, this.calcs.Person1.split]);
+    this.calcs.Person2.subtotal = this.sum([this.calcs.Person2.solo, this.calcs.Person2.split]);
 
     // calculate tax amounts
-    this.person1Tax = this.calcTax(this.person1Subtotal, receipt.subtotal, receipt.tax, true)
-    this.person2Tax = this.calcTax(this.person2Subtotal, receipt.subtotal, receipt.tax, true)
+    this.calcs.Person1.tax = this.calcTax(this.calcs.Person1.subtotal, receipt.subtotal, receipt.tax, true)
+    this.calcs.Person2.tax = this.calcTax(this.calcs.Person2.subtotal, receipt.subtotal, receipt.tax, true)
 
     // calculate tip amounts
-    this.person1Tip = this.splitBetweenAll(receipt.tip, this.numOfPeople, true);
-    this.person2Tip = this.splitBetweenAll(receipt.tip, this.numOfPeople, false);
+    this.calcs.Person1.tip = this.splitBetweenAll(receipt.tip, this.numOfPeople, true);
+    this.calcs.Person2.tip = this.splitBetweenAll(receipt.tip, this.numOfPeople, false);
 
     // aggregate amounts
-    this.person1TotalWithTax = this.sum([this.person1Subtotal, this.person1Tax]);
-    this.person2TotalWithTax = this.sum([this.person2Subtotal, this.person2Tax]);
-    this.person1TotalWithTaxAndTip = this.sum([this.person1Subtotal, this.person1Tax, this.person1Tip]);
-    this.person2TotalWithTaxAndTip = this.sum([this.person2Subtotal, this.person2Tax, this.person2Tip]);
+    this.calcs.Person1.totalWithTax = this.sum([this.calcs.Person1.subtotal, this.calcs.Person1.tax]);
+    this.calcs.Person2.totalWithTax = this.sum([this.calcs.Person2.subtotal, this.calcs.Person2.tax]);
+    this.calcs.Person1.totalWithTaxAndTip = this.sum([this.calcs.Person1.subtotal, this.calcs.Person1.tax, this.calcs.Person1.tip]);
+    this.calcs.Person2.totalWithTaxAndTip = this.sum([this.calcs.Person2.subtotal, this.calcs.Person2.tax, this.calcs.Person2.tip]);
   }
 
   private calcTax(personSubtotal: number, receiptSubtotal: number, tax: number, roundUp: boolean = true): number {
@@ -143,22 +164,17 @@ export class AppLayoutComponent implements OnInit {
   }
 
   private resetCalculatedAmounts(): void {
-    this.person1Only = 0;
-    this.person1Split = 0;
-    this.person1Subtotal = 0;
-    this.person1Tax = 0;
-    this.person1Tip = 0;
-    this.person1TotalWithTax = 0;
-    this.person1TotalWithTaxAndTip = 0;
-    this.person2Only = 0;
-    this.person2Split = 0;
-    this.person2Subtotal = 0;
-    this.person2Tax = 0;
-    this.person2Tip = 0;
-    this.person2TotalWithTax = 0;
-    this.person2TotalWithTaxAndTip = 0;
+    const defaultValue: ICalculatedAmounts = {
+      solo: 0,
+      split: 0,
+      subtotal: 0,
+      tax: 0,
+      tip: 0,
+      totalWithTax: 0,
+      totalWithTaxAndTip: 0,
+    };
+
+    this.calcs.Person1 = { ...defaultValue };
+    this.calcs.Person2 = { ...defaultValue };
   }
-
-
-
 }
