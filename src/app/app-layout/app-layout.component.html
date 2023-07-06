@@ -4,17 +4,60 @@
     <div class="container">
         Calculations breakdown
         <app-calculations></app-calculations>
+        <div class="container">
+            <div class="row">
+                <div class="col-4"></div>
+                <div class="col-2">Person 1</div>
+                <div class="col-2">Person 2</div>
+            </div>
+            <div class="row">
+                <div class="col-4">Only</div>
+                <div class="col-2">{{person1Only}}</div>
+                <div class="col-2">{{person2Only}}</div>
+            </div>
+            <div class="row">
+                <div class="col-4">Split</div>
+                <div class="col-2">{{person1Split}}</div>
+                <div class="col-2">{{person2Split}}</div>
+            </div>
+            <div class="row">
+                <div class="col-4">Subtotal</div>
+                <div class="col-2">{{person1Subtotal}}</div>
+                <div class="col-2">{{person2Subtotal}}</div>
+            </div>
+            <div class="row">
+                <div class="col-4">Tax</div>
+                <div class="col-2">{{person1Tax}}</div>
+                <div class="col-2">{{person2Tax}}</div>
+            </div>
+            <div class="row">
+                <div class="col-4">Tip</div>
+                <div class="col-2">{{person1Tip}}</div>
+                <div class="col-2">{{person2Tip}}</div>
+            </div>
+            <div class="row">
+                <div class="col-4">Total with Tax</div>
+                <div class="col-2">{{person1TotalWithTax}}</div>
+                <div class="col-2">{{person2TotalWithTax}}</div>
+            </div>
+            <div class="row">
+                <div class="col-4">Total with Tax and Tip</div>
+                <div class="col-2">{{person1TotalWithTaxAndTip}}</div>
+                <div class="col-2">{{person2TotalWithTaxAndTip}}</div>
+            </div>
+        </div>
+
     </div>
 
     <div class="container">
         Receipt Totals
-        <receipt-total></receipt-total>
+        <receipt-total (amountAdded)="calculateTotals($event)"></receipt-total>
     </div>
 
     <div class="container">
         Line Items
         <line-item [startNumOfLines]="defaultNumberOfLineItems" [waysToSplit]="waysToSplit"
-            (lineItemUpdateEvent)="calculateTotals($event)"></line-item>
+            (lineItemUpdateEvent)="calculateLineItems($event)"></line-item>
     </div>
 
     <!-- See below for an example on how to refer to self -->

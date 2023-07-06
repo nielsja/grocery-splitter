@@ -7,13 +7,20 @@ type ReceiptForm = {
   [k in FormFields]: FormControl<number | null>
 }
 
+export interface ReceiptTotals {
+  subtotal: number;
+  tax: number;
+  total: number;
+  tip: number;
+  final: number;
+}
 @Component({
   selector: 'receipt-total',
   templateUrl: './receipt-total.component.html',
   styleUrls: ['./receipt-total.component.scss']
 })
 export class ReceiptTotalComponent implements OnInit, OnDestroy {
-  @Output() amountAdded = new EventEmitter<number>();
+  @Output() amountAdded = new EventEmitter<ReceiptTotals>();
 
   regex = new RegExp(/[^\.\d]/g);
 
@@ -94,6 +101,7 @@ export class ReceiptTotalComponent implements OnInit, OnDestroy {
     const final: number = +subtotal + +tax + +tip;
     this.total.setValue(total);
     this.final.setValue(final);
+    this.emitTotals();
   }
 
   private getAmount(inputValue: number | string | null): number {
@@ -102,5 +110,16 @@ export class ReceiptTotalComponent implements OnInit, OnDestroy {
       amount = Number(inputValue.toString().replace(this.regex, ''))
     }
     return amount;
+  }
+
+  private emitTotals(): void {
+    let emitPayload: ReceiptTotals = {
+      subtotal: this.getAmount(this.subtotal.value),
+      tax: this.getAmount(this.tax.value),
+      total: this.getAmount(this.total.value),
+      tip: this.getAmount(this.tip.value),
+      final: this.getAmount(this.final.value),
+    }
+    this.amountAdded.emit(emitPayload)
   }
 }
