@@ -95,13 +95,27 @@ export class ReceiptTotalComponent implements OnInit, OnDestroy {
 
   private updateTotals(): void {
     const subtotal: number = this.getAmount(this.subtotal.value);
-    const tax: number = this.tax.value ?? 0;
-    const total: number = +subtotal + +tax;
-    const tip: number = this.tip.value ?? 0;
-    const final: number = +subtotal + +tax + +tip;
+    const tax: number = this.getAmount(this.tax.value);
+    const total: number = this.roundedSum([subtotal, tax]);
+    const tip: number = this.getAmount(this.tip.value);
+    const final: number = this.roundedSum([subtotal, tax, tip]);
+    console.log(`subtotal: ${subtotal}\n tax: ${tax}\n total: ${total}\n tip: ${tip}\n final: ${final}\n `)
     this.total.setValue(total);
     this.final.setValue(final);
     this.emitTotals();
+  }
+
+  private roundedSum(amounts: number[]): number {
+    let total = 0;
+
+    amounts.forEach((amt) => {
+      total += +amt
+    });
+
+    const multipliedBy100 = total * 100;
+    const rounded = Math.round(multipliedBy100);
+    const dividedBy100 = rounded / 100;
+    return dividedBy100;
   }
 
   private getAmount(inputValue: number | string | null): number {
