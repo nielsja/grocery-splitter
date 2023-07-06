@@ -96,7 +96,7 @@ export class LineItemComponent implements OnInit, OnDestroy {
     const splitByKey = `splitBy-${guid}`
 
     const rowFormControl = this.formBuilder.group<ILineItemFormControl>({
-      itemAmount: this.formBuilder.control(null, { validators: [Validators.required, Validators.pattern("^[0-9]*$")], updateOn: 'blur' }),
+      itemAmount: this.formBuilder.control<number | null>(null, { validators: [Validators.required, Validators.pattern("^[0-9]*$")], updateOn: 'blur' }),
       [splitByKey]: this.formBuilder.control<number | null>(null, { validators: [Validators.required], updateOn: 'change' })
     });
 

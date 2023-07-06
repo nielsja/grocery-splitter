@@ -99,7 +99,6 @@ export class ReceiptTotalComponent implements OnInit, OnDestroy {
     const total: number = this.roundedSum([subtotal, tax]);
     const tip: number = this.getAmount(this.tip.value);
     const final: number = this.roundedSum([subtotal, tax, tip]);
-    console.log(`subtotal: ${subtotal}\n tax: ${tax}\n total: ${total}\n tip: ${tip}\n final: ${final}\n `)
     this.total.setValue(total);
     this.final.setValue(final);
     this.emitTotals();
@@ -120,9 +119,11 @@ export class ReceiptTotalComponent implements OnInit, OnDestroy {
 
   private getAmount(inputValue: number | string | null): number {
     let amount = 0;
+
     if (inputValue) {
       amount = Number(inputValue.toString().replace(this.regex, ''))
     }
+
     return amount;
   }
 

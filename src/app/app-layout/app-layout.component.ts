@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { LineItemComponent } from '../line-item/line-item.component';
 import { ILineItem } from '../line-item/line-item.interface';
-import { WaysToSplit, WaysToSplitType } from '../shared/WaysToSplitEnum';
+import { WaysToSplit } from '../shared/WaysToSplitEnum';
 import { Observable } from 'rxjs';
 import { ReceiptTotals } from '../receipt-total/receipt-total.component';
 
@@ -15,12 +15,12 @@ import { ReceiptTotals } from '../receipt-total/receipt-total.component';
 })
 export class AppLayoutComponent implements OnInit {
   defaultNumberOfLineItems = 3;
+  numOfPeople = 2;
   waysToSplit = [
     WaysToSplit.Person1,
     WaysToSplit.Person2,
     WaysToSplit.All
   ]
-  numOfPeople = 2;
 
   person1Only = 0;
   person1Split = 0;
@@ -38,7 +38,7 @@ export class AppLayoutComponent implements OnInit {
   person2TotalWithTax = 0;
   person2TotalWithTaxAndTip = 0;
 
-  lineItems = [{ itemAmount: 0, splitBy: -1 }];
+  lineItems: ILineItem[] = [{ itemAmount: 0, splitBy: -1 }];
   receipt: ReceiptTotals = {
     subtotal: 0,
     tax: 0,
@@ -46,14 +46,16 @@ export class AppLayoutComponent implements OnInit {
     tip: 0,
     final: 0,
   }
+
   constructor() { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
+
   calculateLineItems(lineItems: ILineItem[]) {
     this.lineItems = lineItems;
     this.calculateAmounts(this.lineItems, this.receipt);
   }
+
   calculateTotals(totals: ReceiptTotals) {
     this.receipt = totals;
     this.calculateAmounts(this.lineItems, this.receipt);
@@ -61,6 +63,7 @@ export class AppLayoutComponent implements OnInit {
 
   private calculateAmounts(lineItems: ILineItem[], receipt: ReceiptTotals) {
     this.resetCalculatedAmounts();
+
     // divide up each item
     lineItems.forEach((item) => {
       // don't know why these are equivalent, but need to do this bullshit casting to make it work
@@ -83,8 +86,8 @@ export class AppLayoutComponent implements OnInit {
     })
 
     // calculate subtotals (no tax + no tip)
-    this.person1Subtotal = this.roundedSum([this.person1Only, this.person1Split]);
-    this.person2Subtotal = this.roundedSum([this.person2Only, this.person2Split]);
+    this.person1Subtotal = this.sum([this.person1Only, this.person1Split]);
+    this.person2Subtotal = this.sum([this.person2Only, this.person2Split]);
 
     // calculate tax amounts
     this.person1Tax = this.calcTax(this.person1Subtotal, receipt.subtotal, receipt.tax, true)
@@ -95,10 +98,10 @@ export class AppLayoutComponent implements OnInit {
     this.person2Tip = this.splitBetweenAll(receipt.tip, this.numOfPeople, false);
 
     // aggregate amounts
-    this.person1TotalWithTax = this.roundedSum([this.person1Subtotal, this.person1Tax]);
-    this.person2TotalWithTax = this.roundedSum([this.person2Subtotal, this.person2Tax]);
-    this.person1TotalWithTaxAndTip = this.roundedSum([this.person1Subtotal, this.person1Tax, this.person1Tip]);
-    this.person2TotalWithTaxAndTip = this.roundedSum([this.person2Subtotal, this.person2Tax, this.person2Tip]);
+    this.person1TotalWithTax = this.sum([this.person1Subtotal, this.person1Tax]);
+    this.person2TotalWithTax = this.sum([this.person2Subtotal, this.person2Tax]);
+    this.person1TotalWithTaxAndTip = this.sum([this.person1Subtotal, this.person1Tax, this.person1Tip]);
+    this.person2TotalWithTaxAndTip = this.sum([this.person2Subtotal, this.person2Tax, this.person2Tip]);
   }
 
   private calcTax(personSubtotal: number, receiptSubtotal: number, tax: number, roundUp: boolean = true): number {
@@ -126,7 +129,20 @@ export class AppLayoutComponent implements OnInit {
     return dividedBy100;
   }
 
-  resetCalculatedAmounts(): void {
+  private sum(amounts: number[]): number {
+    let total = 0;
+
+    amounts.forEach((amt) => {
+      total += +amt
+    });
+
+    const multipliedBy100 = total * 100;
+    const rounded = Math.round(multipliedBy100);
+    const dividedBy100 = rounded / 100;
+    return dividedBy100;
+  }
+
+  private resetCalculatedAmounts(): void {
     this.person1Only = 0;
     this.person1Split = 0;
     this.person1Subtotal = 0;
@@ -142,17 +158,7 @@ export class AppLayoutComponent implements OnInit {
     this.person2TotalWithTax = 0;
     this.person2TotalWithTaxAndTip = 0;
   }
-  private roundedSum(amounts: number[]): number {
-    let total = 0;
 
-    amounts.forEach((amt) => {
-      total += +amt
-    });
 
-    const multipliedBy100 = total * 100;
-    const rounded = Math.round(multipliedBy100);
-    const dividedBy100 = rounded / 100;
-    return dividedBy100;
-  }
 
 }
