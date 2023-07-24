@@ -1,48 +1,46 @@
-<div class="col-6">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col-2">Amount</th>
-                <th scope="col-1">Person 1</th>
-                <th scope="col-1">Person 2</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Solo items</td>
-                <td>{{ this.calculations.Person1.solo | currency:'USD' }}</td>
-                <td>{{ this.calculations.Person2.solo | currency:'USD' }}</td>
-            </tr>
-            <tr>
-                <td>Shared items</td>
-                <td>{{ this.calculations.Person1.split | currency:'USD' }}</td>
-                <td>{{ this.calculations.Person2.split | currency:'USD' }}</td>
-            </tr>
-            <tr>
-                <td>Subtotal</td>
-                <td>{{ this.calculations.Person1.subtotal | currency:'USD' }}</td>
-                <td>{{ this.calculations.Person2.subtotal | currency:'USD' }}</td>
-            </tr>
-            <tr>
-                <td>Tax</td>
-                <td>{{ this.calculations.Person1.tax | currency:'USD' }}</td>
-                <td>{{ this.calculations.Person2.tax | currency:'USD' }}</td>
-            </tr>
-            <tr>
-                <td>Tip</td>
-                <td>{{ this.calculations.Person1.tip | currency:'USD' }}</td>
-                <td>{{ this.calculations.Person2.tip | currency:'USD' }}</td>
-            </tr>
-            <tr>
-                <td>Total (with tax)</td>
-                <td>{{ this.calculations.Person1.totalWithTax | currency:'USD' }}</td>
-                <td>{{ this.calculations.Person2.totalWithTax | currency:'USD' }}</td>
-            </tr>
-            <tr>
-                <td>Total (with tax and tip)</td>
-                <td>{{ this.calculations.Person1.totalWithTaxAndTip | currency:'USD' }}</td>
-                <td>{{ this.calculations.Person2.totalWithTaxAndTip | currency:'USD' }}</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+<table class="table table-striped my-2">
+    <thead>
+        <tr>
+            <th scope="col-2">Amount</th>
+            <th scope="col-1">Person 1</th>
+            <th scope="col-1">Person 2</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Solo items</td>
+            <td>{{ this.calculations.Person1.solo | currency:'USD' }}</td>
+            <td>{{ this.calculations.Person2.solo | currency:'USD' }}</td>
+        </tr>
+        <tr>
+            <td>Shared items</td>
+            <td>{{ this.calculations.Person1.split | currency:'USD' }}</td>
+            <td>{{ this.calculations.Person2.split | currency:'USD' }}</td>
+        </tr>
+        <tr>
+            <td>Subtotal</td>
+            <td>{{ this.calculations.Person1.subtotal | currency:'USD' }}</td>
+            <td>{{ this.calculations.Person2.subtotal | currency:'USD' }}</td>
+        </tr>
+        <tr>
+            <td>Tax</td>
+            <td>{{ this.calculations.Person1.tax | currency:'USD' }}</td>
+            <td>{{ this.calculations.Person2.tax | currency:'USD' }}</td>
+        </tr>
+        <tr>
+            <td>Tip</td>
+            <td>{{ this.calculations.Person1.tip | currency:'USD' }}</td>
+            <td>{{ this.calculations.Person2.tip | currency:'USD' }}</td>
+        </tr>
+        <tr>
+            <td>Total (with tax)</td>
+            <td>{{ this.calculations.Person1.totalWithTax | currency:'USD' }}</td>
+            <td>{{ this.calculations.Person2.totalWithTax | currency:'USD' }}</td>
+        </tr>
+        <tr>
+            <td>Total (with tax and tip)</td>
+            <td>{{ this.calculations.Person1.totalWithTaxAndTip | currency:'USD' }}</td>
+            <td>{{ this.calculations.Person2.totalWithTaxAndTip | currency:'USD' }}</td>
+        </tr>
+    </tbody>
+</table>

@@ -1,24 +1,60 @@
-<div class="container">
-    <div>Tooltip</div>
+<div class="container h-100 d-flex flex-column">
+    <!-- START Calculations Breakdown accordion -->
+    <div class="row align-items-start my-2">
+        <div id="calculationsAccordion" class="accordion accordion-flush">
+            <div class="accordion-item">
+                <h2 id="calculationsAccordionHeader" class="accordion-header">
+                    <button data-bs-target="#calculationsAccordionBody" aria-controls="calculationsAccordionBody"
+                        class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        aria-expanded="false">
+                        Calculations breakdown
+                    </button>
+                </h2>
 
-    <div class="container">
-        Calculations breakdown
-        <app-calculations [lineItems]="lineItems" [receipt]="receiptTotals" [waysToSplit]="waysToSplit"
-            [partiesToSplit]="partiesToSplit" [numOfPeople]="numOfPeople"></app-calculations>
-
+                <div id="calculationsAccordionBody" aria-labelledby="calculationsAccordionHeader"
+                    data-bs-parent="#calculationsAccordion" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <app-calculations [lineItems]="lineItems" [receipt]="receiptTotals" [waysToSplit]="waysToSplit"
+                            [partiesToSplit]="partiesToSplit" [numOfPeople]="numOfPeople"></app-calculations>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <!-- END Calculations Breakdown Accordion -->
 
-    <div class="container">
-        Receipt Totals
-        <receipt-total (amountAdded)="calculateTotals($event)"></receipt-total>
+    <!-- START Receipt Totals Accordion -->
+    <div class="row align-items-start my-2">
+        <div id="receiptTotalsAccordion" class="accordion accordion-flush">
+            <div class="accordion-item">
+                <h2 id="receiptTotalsAccordionHeader" class="accordion-header">
+                    <button data-bs-target="#receiptTotalsAccordionBody" aria-controls="receiptTotalsAccordionBody"
+                        class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        aria-expanded="false">
+                        Receipt Totals
+                    </button>
+                </h2>
+
+                <div id="receiptTotalsAccordionBody" aria-labelledby="receiptTotalsAccordionHeader"
+                    data-bs-parent="#receiptTotalsAccordion" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <receipt-total (amountAdded)="calculateTotals($event)"></receipt-total>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <!-- END Receipt Totals Accordion -->
 
-    <div class="container">
-        Line Items
+    <div class="row align-items-stretch my-2 scrollable">
+        <h2>
+            Line Items
+        </h2>
         <line-item [startNumOfLines]="defaultNumberOfLineItems" [waysToSplit]="waysToSplit"
             (lineItemUpdateEvent)="calculateLineItems($event)"></line-item>
     </div>
+</div>
 
-    <!-- See below for an example on how to refer to self -->
-    <!-- https://angular.io/guide/user-input#on-blur -->
-    <!-- <input #box (keyup)="callComponentFunction(box.value)"> -->
+<!-- See below for an example on how to refer to self -->
+<!-- https://angular.io/guide/user-input#on-blur -->
+<!-- <input #box (keyup)="callComponentFunction(box.value)"> -->

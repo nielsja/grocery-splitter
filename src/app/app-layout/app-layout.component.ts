@@ -12,7 +12,7 @@ import { ReceiptTotals } from '../receipt-total/receipt-total.component';
   styleUrls: ['./app-layout.component.scss']
 })
 export class AppLayoutComponent {
-  defaultNumberOfLineItems = 3;
+  defaultNumberOfLineItems = 13;
   numOfPeople = 2;
   waysToSplit = [
     WaysToSplit.Person1,

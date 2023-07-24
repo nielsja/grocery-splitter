@@ -1,15 +1,25 @@
-.toolbar {
-    background-color: var(--bs-primary);
-    color: var(--bs-secondary-bg-subtle);
-    padding: 1rem;
-}
+$toolbar-height: 50px;
 
-.content {
-    padding: 1rem;
+.body {
     background-color: var(--bs-success-bg-subtle);
     height: 100vh;
 }
 
-.body {
-    height: 100vh;
+.toolbar {
+    background-color: var(--bs-primary);
+    color: var(--bs-secondary-bg-subtle);
+    padding: 1rem;
+    height: $toolbar-height;
+}
+
+.scrollable {
+    padding: 1rem 0.5rem;
+    overflow-y: scroll;
+    height: calc(100vh - $toolbar-height);
+}
+
+.app-body {
+    height: calc(100vh - $toolbar-height);
+    max-height: calc(100vh - $toolbar-height);
+
 }
