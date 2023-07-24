@@ -1,7 +1,7 @@
 export enum WaysToSplit {
+    All = 0,
     Person1 = 1,
     Person2 = 2,
-    All = 0
 }
-
-export type SplitBetween = keyof typeof WaysToSplit;
+export type WaysToSplitType = keyof typeof WaysToSplit;
+export type SplitParties = Exclude<WaysToSplitType, 'All'>;

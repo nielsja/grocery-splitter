@@ -3,49 +3,8 @@
 
     <div class="container">
         Calculations breakdown
-        <app-calculations></app-calculations>
-        <div class="container">
-            <div class="row">
-                <div class="col-4"></div>
-                <div class="col-2">Person 1</div>
-                <div class="col-2">Person 2</div>
-            </div>
-            <div class="row">
-                <div class="col-4">Only</div>
-                <div class="col-2">{{this.calcs.Person1.solo}}</div>
-                <div class="col-2">{{this.calcs.Person2.solo}}</div>
-            </div>
-            <div class="row">
-                <div class="col-4">Split</div>
-                <div class="col-2">{{this.calcs.Person1.split}}</div>
-                <div class="col-2">{{this.calcs.Person2.split}}</div>
-            </div>
-            <div class="row">
-                <div class="col-4">Subtotal</div>
-                <div class="col-2">{{this.calcs.Person1.subtotal}}</div>
-                <div class="col-2">{{this.calcs.Person2.subtotal}}</div>
-            </div>
-            <div class="row">
-                <div class="col-4">Tax</div>
-                <div class="col-2">{{this.calcs.Person1.tax}}</div>
-                <div class="col-2">{{this.calcs.Person2.tax}}</div>
-            </div>
-            <div class="row">
-                <div class="col-4">Tip</div>
-                <div class="col-2">{{this.calcs.Person1.tip}}</div>
-                <div class="col-2">{{this.calcs.Person2.tip}}</div>
-            </div>
-            <div class="row">
-                <div class="col-4">Total with Tax</div>
-                <div class="col-2">{{this.calcs.Person1.totalWithTax}}</div>
-                <div class="col-2">{{this.calcs.Person2.totalWithTax}}</div>
-            </div>
-            <div class="row">
-                <div class="col-4">Total with Tax and Tip</div>
-                <div class="col-2">{{this.calcs.Person1.totalWithTaxAndTip}}</div>
-                <div class="col-2">{{this.calcs.Person2.totalWithTaxAndTip}}</div>
-            </div>
-        </div>
+        <app-calculations [lineItems]="lineItems" [receipt]="receiptTotals" [waysToSplit]="waysToSplit"
+            [partiesToSplit]="partiesToSplit" [numOfPeople]="numOfPeople"></app-calculations>
 
     </div>
 
