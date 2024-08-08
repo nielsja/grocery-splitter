@@ -1,0 +1,17 @@
+$navbar-height: 50px;
+
+.accordion-navbar {
+    height: $navbar-height;
+}
+
+.scrollable {
+    overflow-y: scroll;
+    height: auto;
+    // height: calc(100% - $navbar-height);
+}
+
+.accordion-content {
+    overflow-y: scroll;
+    height: calc(100% - $navbar-height);
+
+}

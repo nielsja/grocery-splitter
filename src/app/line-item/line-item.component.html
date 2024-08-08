@@ -1,0 +1,43 @@
+<div class="container">
+    <ng-container [formGroup]="formGroup">
+
+        <!-- Each Line Item Row -->
+        <ng-container formArrayName="lineItemsArray">
+            <ng-container *ngFor="let lineItemGroup of lineItemsArray.controls; let i = index">
+                <div [formGroup]="lineItemGroup" class="row bg-light border p-2 my-2 align-items-center">
+
+                    <!-- Item Amount Input -->
+                    <div class="col-3">
+                        <input type="text" class="form-control" formControlName="itemAmount" placeholder="12.34">
+                    </div>
+
+                    <!-- People to Split Radios -->
+                    <div class="btn-group col-6" role="group">
+                        <ng-container *ngFor="let split of waysToSplit">
+                            <input type="radio" class="btn-check" value="{{WaysToSplitEnum[split]}}"
+                                id="line-item-{{i}}-splitBy-button-radio-{{split}}" name="splitBy-{{i}}"
+                                [formControl]="getLineItemSplitByFormControl(i)">
+                            <label class="btn btn-outline-primary col-2"
+                                for="line-item-{{i}}-splitBy-button-radio-{{split}}">{{
+                                WaysToSplitEnum[split]
+                                }}
+                            </label>
+                        </ng-container>
+                    </div>
+
+                    <!-- Remove Line Item Button -->
+                    <div class=" col-2">
+                        <button class="btn btn-outline-danger" (click)="deleteLineItem(i)">
+                            Remove</button>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+
+        <!-- Add Line Item Button -->
+        <button class="btn btn-outline-success" (click)="addLineItem()">
+            Add new line item
+        </button>
+
+    </ng-container>
+</div>
